@@ -20,7 +20,7 @@
 
 1. **Клонирование репозитория**:
 ```
-git clone https://github.com/your-repo/telegram-movie-bot.git
+git clone https://gitlab.skillbox.ru/mishania_geniush/python_basic_diploma.git
 ```
 2. **Установка зависимостей**:
 ```
