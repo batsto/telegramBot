@@ -7,7 +7,7 @@ else:
     load_dotenv()
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
-RAPID_API_KEY = os.getenv("RAPID_API_KEY")
+KINOPOISK_API_KEY = os.getenv("KINOPOISK_API_KEY")
 DEFAULT_COMMANDS = (
     ("start", "Запустить бота"),
     ("menu", "Меню"),
