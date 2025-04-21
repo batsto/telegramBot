@@ -1,17 +1,15 @@
 
-import requests
-from config_data.config import KINOPOISK_API_KEY
+from api.get_request import get_request_json
 from typing import List
 
 SELECT_FIELDS = ["name", "description", "year", "rating", "genres", "ageRating", "poster"]
 
 
-def get_ten_films_list(query: str) -> List:
+def get_ten_films_list(query: dict) -> List:
     url = "https://api.kinopoisk.dev/v1.4/movie/search"
-    headers = {"X-API-KEY": KINOPOISK_API_KEY}
-    params = {"query": query, "limit": 10}
+    params = query
 
-    response = requests.get(url, headers=headers, params=params).json()
+    response = get_request_json(url=url, params=params)
     docs = response.get("docs", [])
 
     filtered_docs = [
