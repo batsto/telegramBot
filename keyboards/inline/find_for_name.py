@@ -15,6 +15,7 @@ MOVIE_GENRES: List[List[str]] = [
     ["триллер", "genre_triller"],
     ["ужасы", "genre_uzhasy"],
     ["фантастика", "genre_fantastika"],
+    ["пропустить", "genre_cancel"]
 ]
 
 

@@ -7,9 +7,8 @@ SELECT_FIELDS = ["name", "description", "year", "rating", "genres", "ageRating",
 
 def get_ten_films_list(query: dict) -> List:
     url = "https://api.kinopoisk.dev/v1.4/movie/search"
-    params = query
 
-    response = get_request_json(url=url, params=params)
+    response = get_request_json(url=url, params=query)
     docs = response.get("docs", [])
 
     filtered_docs = [

@@ -1,11 +1,10 @@
-
+from pyexpat.errors import messages
 
 from telebot import types
 from loader import bot
-from api.get_ten_movies import get_ten_films_list
-from utils.create_str_text import create_str
+from api.get_movie_by_name import get_ten_films_list
 from keyboards.inline.find_for_name import keyboard_genres
-
+from utils.output_films import output_films_in_chat
 
 search_query = {}
 
@@ -13,6 +12,7 @@ search_query = {}
 
 @bot.message_handler(func=lambda m: m.text == "🔍 Поиск по названию")
 def search_for_name(message: types.Message) -> None:
+    """Cпрашивает у пользователя название фильма"""
     msg = bot.send_message(chat_id=message.chat.id,
                          text="Введите название фильма, который хотите найти",
                             )
@@ -21,6 +21,7 @@ def search_for_name(message: types.Message) -> None:
 
 
 def chose_genres(message) -> None:
+    """Cпрашивает у пользователя жанр"""
     search_query["query"] = message.text
     bot.send_message(chat_id=message.chat.id,
                            text="Выбирите жанр:",
@@ -29,20 +30,22 @@ def chose_genres(message) -> None:
 
 @bot.callback_query_handler(func=lambda call: call.data.startswith("genre_"))
 def chose_quantity(call) -> None:
-    bot.edit_message_reply_markup(
-        chat_id=call.message.chat.id,
-        message_id=call.message.text,
-        reply_markup=None
-    )
-    search_query["genres.name"] = call.data.replace("genre_", "")
+    """Cпрашивает у пользователя количество выводимых результатов"""
+
+    genre = call.data.replace("genre_", "")
+    if genre != "cancel":  # пропускает выбор жанра
+        search_query["genres.name"] = genre
+
     msg = bot.send_message(chat_id=call.message.chat.id,
-                     text="Сколько результатов поиска хотите увидеть? (1-10)"
+                            text="Сколько результатов поиска хотите увидеть? (1-10)",
+                            reply_markup=None
                      )
     bot.register_next_step_handler(msg, process_quantity)
 
 
 
 def process_quantity(message: types.Message) -> None:
+    """Выволит результаты пойска"""
     try:
         quantity = int(message.text)
 
@@ -54,23 +57,8 @@ def process_quantity(message: types.Message) -> None:
 
 
         films_info = get_ten_films_list(search_query)
+        output_films_in_chat(films_info, message)
 
-        if not films_info:
-            bot.send_message(message.chat.id, "Фильмы не найдены. Попробуйте другой запрос.")
-            return
-
-        bot.send_message(message.chat.id, "🔍 Результаты поиска:\n\n")
-        for film in films_info:
-
-            text_film = create_str(film)
-
-            poster = film.get("poster", {}).get("url")
-            if poster:
-                    bot.send_photo(
-                        chat_id=message.chat.id,
-                        photo=poster,
-                        caption=text_film
-                    )
 
     except ValueError:
         bot.send_message(message.chat.id,
