@@ -2,7 +2,7 @@ from pyexpat.errors import messages
 
 from telebot import types
 from loader import bot
-from api.get_movie_by_name import get_ten_films_list
+from api.get_movie import get_movie_by_name
 from keyboards.inline.find_for_name import keyboard_genres
 from utils.output_films import output_films_in_chat
 
@@ -56,8 +56,9 @@ def process_quantity(message: types.Message) -> None:
             return
 
 
-        films_info = get_ten_films_list(search_query)
-        output_films_in_chat(films_info, message)
+        films_info = get_movie_by_name(search_query)
+        if films_info:
+            output_films_in_chat(films_info, message)
 
 
     except ValueError:
