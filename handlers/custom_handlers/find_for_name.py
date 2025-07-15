@@ -1,12 +1,12 @@
-from pyexpat.errors import messages
 
 from telebot import types
 from loader import bot
 from api.get_movie import get_movie_by_name
 from keyboards.inline.find_for_name import keyboard_genres
 from utils.output_films import output_films_in_chat
+from database.queries import save_search_request, get_user_search_request
 
-search_query = {}
+
 
 
 
@@ -22,7 +22,10 @@ def search_for_name(message: types.Message) -> None:
 
 def chose_genres(message) -> None:
     """Cпрашивает у пользователя жанр"""
-    search_query["query"] = message.text
+    #search_query["query"] = message.text
+    save_search_request(user_id=message.from_user.id,
+                        query=message.text)
+
     bot.send_message(chat_id=message.chat.id,
                            text="Выбирите жанр:",
                            reply_markup=keyboard_genres())
@@ -32,9 +35,11 @@ def chose_genres(message) -> None:
 def chose_quantity(call) -> None:
     """Cпрашивает у пользователя количество выводимых результатов"""
 
-    genre = call.data.replace("genre_", "")
-    if genre != "cancel":  # пропускает выбор жанра
-        search_query["genres.name"] = genre
+    genre_now = call.data.replace("genre_", "")
+    if genre_now != "cancel":  # пропускает выбор жанра
+        #search_query["genres.name"] = genre
+        save_search_request(user_id=call.from_user.id,
+                            genre=genre_now)
 
     msg = bot.send_message(chat_id=call.message.chat.id,
                             text="Сколько результатов поиска хотите увидеть? (1-10)",
@@ -47,15 +52,20 @@ def chose_quantity(call) -> None:
 def process_quantity(message: types.Message) -> None:
     """Выволит результаты пойска"""
     try:
-        quantity = int(message.text)
+        quantity_now = int(message.text)
 
-        if 1 <= quantity <= 10:
-            search_query["limit"] = quantity
+        if 1 <= quantity_now <= 10:
+            #search_query["limit"] = quantity
+            save_search_request(user_id=message.from_user.id,
+                                quantity=quantity_now)
         else:
             bot.send_message(message.chat.id, "Введите число от 1 до 10!")
             return
 
 
+        #films_info = get_movie_by_name(search_query)
+        search_query = get_user_search_request(user_id=message.from_user.id)
+        print(search_query)
         films_info = get_movie_by_name(search_query)
         if films_info:
             output_films_in_chat(films_info, message)
