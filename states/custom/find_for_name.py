@@ -1,4 +1,4 @@
-from telebot.states import State, StatesGroup
+from telebot.handler_backends import State, StatesGroup
 
 
 
