@@ -3,19 +3,19 @@ from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton
 from typing import List
 
 MOVIE_GENRES: List[List[str]] = [
-    ["боевик", "genre_boevik"],
-    ["военный", "genre_voennyy"],
-    ["детектив", "genre_detektiv"],
-    ["драма", "genre_drama"],
-    ["комедия", "genre_komediya"],
-    ["криминал", "genre_kriminal"],
-    ["мелодрама", "genre_melodrama"],
-    ["мультфильм", "genre_multfilm"],
-    ["приключения", "genre_priklyucheniya"],
-    ["триллер", "genre_triller"],
-    ["ужасы", "genre_uzhasy"],
-    ["фантастика", "genre_fantastika"],
-    ["пропустить", "genre_cancel"]
+    ["боевик", "boevik"],
+    ["военный", "voennyy"],
+    ["детектив", "detektiv"],
+    ["драма", "drama"],
+    ["комедия", "komediya"],
+    ["криминал", "kriminal"],
+    ["мелодрама", "melodrama"],
+    ["мультфильм", "multfilm"],
+    ["приключения", "priklyucheniya"],
+    ["триллер", "triller"],
+    ["ужасы", "uzhasy"],
+    ["фантастика", "fantastika"],
+    ["пропустить", "cancel"]
 ]
 
 
