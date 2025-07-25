@@ -23,9 +23,9 @@ def rating_movie(message: Message) -> None:
         # Получаем рейтинг от пользователя
         rating_now = float(message.text.replace(",", "."))
         if  not 1 <= rating_now <= 10:
-            bot.send_message(chat_id=message.chat.id,
+            msg = bot.send_message(chat_id=message.chat.id,
                              text="Рейтинг должен быть от 0 до 10. Попробуйте снова.")
-            return
+            bot.register_next_step_handler(msg, input_rating)
         # Сохраняем данные в бд
         save_search_request(user_id=message.from_user.id,
                             rating=rating_now,
