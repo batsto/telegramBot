@@ -3,7 +3,7 @@ from loader import bot
 from api.get_movie import get_movie_by_rating
 from utils.output_films import output_films_in_chat
 from keyboards.inline.movie_by_rating import next_button, next_previous_button
-from python_basic_diploma.database.queries import save_search_request, get_user_search_request
+from database.queries import save_search_request, get_user_search_request
 
 
 
