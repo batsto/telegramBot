@@ -8,8 +8,10 @@ else:
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
 KINOPOISK_API_KEY = os.getenv("KINOPOISK_API_KEY")
+
+
+
 DEFAULT_COMMANDS = (
     ("start", "Запустить бота"),
-    ("menu", "Меню"),
     ("help", "Вывести справку"),
 )

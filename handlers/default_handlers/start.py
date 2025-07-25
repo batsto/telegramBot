@@ -1,5 +1,5 @@
 from telebot.types import Message
-from keyboards.reply.menu_button import get_main_menu_keyboard
+from keyboards.reply.main_menu import main_menu_keyboards
 from loader import bot
 
 
@@ -15,5 +15,5 @@ def bot_start(message: Message):
         message.chat.id,
         welcome_text,
         parse_mode="HTML",
-        reply_markup=get_main_menu_keyboard(),
+        reply_markup=main_menu_keyboards(),
     )
