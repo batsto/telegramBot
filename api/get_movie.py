@@ -1,5 +1,5 @@
 from typing import List
-from utils.constants import SELECT_FIELDS, MOVIE_URL, SEARCH_URL
+from config_data.config import SELECT_FIELDS
 from .get_request import get_request_json
 
 
@@ -21,9 +21,3 @@ def get_movie(query: dict, url: str) -> List:
 
     return filtered_docs
 
-
-def get_movie_by_name(query: dict) -> List:
-    return get_movie(query, SEARCH_URL)
-
-def get_movie_by_rating(query: dict) -> List:
-    return get_movie(query, MOVIE_URL)

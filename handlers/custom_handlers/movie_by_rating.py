@@ -1,36 +1,8 @@
 from telebot.types import Message, CallbackQuery
-
 from keyboards.reply.main_menu import main_menu_keyboards
 from loader import bot
-from api.get_movie import get_movie_by_rating
 from states.state_classes import MovieByRating
-from utils.output_films import output_films_in_chat
-from keyboards.inline.movie_by_rating import next_button, next_previous_button
-
-
-
-def print_message(rating: float, page: int, message: Message):
-    try:
-        films_info = get_movie_by_rating({"rating.kp": rating, "page": page})
-        if films_info:
-            # Выводим сообщение в чат
-            output_films_in_chat(films_info, message=message)
-
-            # Определяем какую клавиатуру показывать
-            reply_markup = next_button() if page == 1 else next_previous_button()
-
-            # Отправляем клавиатуру
-            bot.send_message(chat_id=message.chat.id,
-                             text="Выбирите действие",
-                             reply_markup=reply_markup)
-
-    except Exception as e:
-        print(f"Ошибка {e}")
-        bot.send_message(
-            chat_id=message.chat.id,
-            text="Произошла ошибка при поиске. Попробуйте позже.")
-        bot.delete_state(user_id=message.from_user.id,
-                         chat_id=message.chat.id)
+from utils.output_films import print_message
 
 
 @bot.message_handler(func=lambda m: m.text == "⭐ Фильмы по рейтингу")
@@ -61,8 +33,10 @@ def rating_movie(message: Message) -> None:
             data['rating'] = rating_now
             data['page'] = page_now
 
+        search_query = {"rating.kp": rating_now, "page": page_now}
+
         # Отправляем данные в чат
-        print_message(rating=rating_now, page=page_now, message=message)
+        print_message(search_query, message=message)
 
         # Меняем состояние
         bot.set_state(user_id=message.from_user.id,
@@ -75,18 +49,16 @@ def rating_movie(message: Message) -> None:
                               "Введите с каким рейтингом хотите увидеть фильмы:")
 
 
-
-
 @bot.callback_query_handler(state='*', func=lambda c: c.data == "cancel")
 def repiet_input_rating(call: CallbackQuery) -> None:
     """Логика после нажатия кнопки назад"""
     bot.delete_state(user_id=call.from_user.id,
                      chat_id=call.message.chat.id)
+    bot.delete_message(chat_id=call.message.chat.id, message_id=call.message.id)
     bot.send_message(
         chat_id=call.message.chat.id,
+        text="Поиск отменен",
         reply_markup=main_menu_keyboards())
-
-
 
 
 @bot.callback_query_handler(state=MovieByRating.page)
@@ -112,7 +84,7 @@ def handle_pagination(call: CallbackQuery) -> None:
                        message_id=call.message.message_id)
 
     # Определяем направление пагинации
-    if call.data == "next_rating":
+    if call.data == "next":
         page_now = page + 1
     else:
         page_now = max(page - 1, 1)
@@ -121,6 +93,7 @@ def handle_pagination(call: CallbackQuery) -> None:
     with bot.retrieve_data(user_id=call.from_user.id, chat_id=call.message.chat.id) as data:
         data['page'] = page_now
 
-    # Отправляем данные в чат
-    print_message(rating=rating, page=page_now, message=call.message)
+    search_query = {"rating.kp": rating, "page": page_now}
 
+    # Отправляем данные в чат
+    print_message(search_query, message=call.message)

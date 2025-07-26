@@ -1,8 +1,7 @@
 from telebot import types
 from loader import bot
-from api.get_movie import get_movie_by_name
 from keyboards.inline.find_for_name import keyboard_genres
-from utils.output_films import output_films_in_chat
+from utils.output_films import  print_message
 from states.state_classes import FindForName
 
 
@@ -70,17 +69,10 @@ def process_quantity(message: types.Message) -> None:
                 'query': data.get('query'),
                 'genre': data.get('genre')}
 
-        films_info = get_movie_by_name(search_query)
-        if films_info:
-            output_films_in_chat(films_info, message, quantity)
+        print_message(data=search_query, message=message, quantity=quantity)
 
     except ValueError:
         bot.send_message(message.chat.id,
                          "Нужно ввести число")
-    except Exception as e:
-        print(f"Ошибка {e}")
-        bot.send_message(
-            chat_id=message.chat.id,
-            text="Произошла ошибка при поиске. Попробуйте позже.")
     finally:
         bot.delete_state(user_id=message.from_user.id, chat_id=message.chat.id)
