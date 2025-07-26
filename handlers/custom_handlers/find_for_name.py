@@ -3,7 +3,7 @@ from loader import bot
 from api.get_movie import get_movie_by_name
 from keyboards.inline.find_for_name import keyboard_genres
 from utils.output_films import output_films_in_chat
-from states.custom.find_for_name import FindForName
+from states.state_classes import FindForName
 
 
 @bot.message_handler(func=lambda m: m.text == "🔍 Поиск по названию")

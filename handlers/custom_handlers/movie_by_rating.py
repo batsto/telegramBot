@@ -3,7 +3,7 @@ from telebot.types import Message, CallbackQuery
 from keyboards.reply.main_menu import main_menu_keyboards
 from loader import bot
 from api.get_movie import get_movie_by_rating
-from states.custom.movie_by_rating import MovieByRating
+from states.state_classes import MovieByRating
 from utils.output_films import output_films_in_chat
 from keyboards.inline.movie_by_rating import next_button, next_previous_button
 

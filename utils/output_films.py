@@ -23,3 +23,5 @@ def output_films_in_chat(data: List, message: types.Message, quantity: int = 10)
                     photo=poster,
                     caption=text_film
                 )
+
+
