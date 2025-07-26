@@ -5,7 +5,7 @@ from loader import bot
 from .create_str_text import create_str
 
 
-def output_films_in_chat(data: List, message: types.Message, quantity: int) -> None:
+def output_films_in_chat(data: List, message: types.Message, quantity: int = 10) -> None:
     """Печатает фильмы в чат"""
     if not data:
         bot.send_message(message.chat.id, "Фильмы не найдены. Попробуйте другой запрос.")
