@@ -15,7 +15,7 @@ def output_films_in_chat(data: List, message: types.Message, quantity: int = 10)
 
     bot.send_message(message.chat.id, "🔍 Результаты поиска:\n\n")
     for ind, film in enumerate(data):
-        if ind <= quantity:
+        if ind < quantity:
             text_film = create_str(film)
 
             poster = film.get("poster", {}).get("url")
