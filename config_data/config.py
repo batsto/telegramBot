@@ -36,3 +36,7 @@ DEFAULT_COMMANDS = (
     ("start", "Запустить бота"),
     ("help", "Вывести справку"),
 )
+
+DATE_FORMAT = "%d.%m.%Y"
+
+DB_PATH = os.path.abspath("database.db")
